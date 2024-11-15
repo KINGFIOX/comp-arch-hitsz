@@ -75,7 +75,7 @@ DO_LOOP_M:
 
     mov mat_elem_idx, %rbx
     add DIM_K, %rbx
-    prefetchnta (MAT_A, %rbx, 4)        // prefetch A[m + 1][k]
+    prefetcht1 (MAT_A, %rbx, 4)        // prefetch A[m + 1][k]
 
 DO_LOOP_N:
     mov DIM_N, %rax
@@ -86,7 +86,7 @@ DO_LOOP_N:
 
     mov mat_elem_idx, %rbx
     inc %rbx
-    prefetchnta (MAT_A, %rbx, 4)        // prefetch B[k][n + 1]
+    prefetcht1 (MAT_B, %rbx, 4)        // prefetch B[k][n + 1]
 
     fmul %st(1), %st(0)                 // 计算A[m][k] * B[k][n]
 
@@ -96,7 +96,7 @@ DO_LOOP_N:
     add loop_n, mat_elem_idx                    // 计算 m*N+n
     flds (MAT_C, mat_elem_idx, 4)     // 加载 C[m][n]
 
-    prefetchnta (MAT_C, mat_elem_idx, 4)        // prefetch C[m][n]
+    prefetcht1 (MAT_C, mat_elem_idx, 4)        // prefetch C[m][n]
 
     faddp %st(1), %st(0)                 // 计算 C[m][n] + A[m][k] * B[k][n]
     fstps (MAT_C, mat_elem_idx, 4)
