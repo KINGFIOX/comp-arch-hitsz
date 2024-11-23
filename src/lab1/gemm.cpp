@@ -18,7 +18,8 @@ double dclock() {
 
   gettimeofday(&tv, NULL);
 
-  if (abs(gtod_ref_time_sec) < 1e-15) gtod_ref_time_sec = (double)tv.tv_sec;
+  if (abs(gtod_ref_time_sec) < 1e-15)
+    gtod_ref_time_sec = (double)tv.tv_sec;
 
   norm_sec = (double)tv.tv_sec - gtod_ref_time_sec;
 
@@ -32,7 +33,8 @@ void random_matrix(int m, int n, float *a) {
   int i, j;
 
   for (i = 0; i < m; i++)
-    for (j = 0; j < n; j++) a[i * n + j] = 2.0 * (float)drand48() - 1.0;
+    for (j = 0; j < n; j++)
+      a[i * n + j] = 2.0 * (float)drand48() - 1.0;
 }
 
 double perform_gemm_baseline(unsigned iteration_times, int m, int n, int k) {
@@ -48,12 +50,12 @@ double perform_gemm_baseline(unsigned iteration_times, int m, int n, int k) {
   matrix_c = new float[m * n];
   memset((void *)matrix_c, 0, m * n * sizeof(float));
 
-  for (i = 0; i < 10; i++) {  // 使缓存热起来
+  for (i = 0; i < 10; i++) { // 使缓存热起来
     gemm_kernel(matrix_c, matrix_a, matrix_b, m, n, k);
   }
 
   start = dclock();
-  for (i = 0; i < iteration_times; i++) {  // 真实跑性能
+  for (i = 0; i < iteration_times; i++) { // 真实跑性能
     gemm_kernel(matrix_c, matrix_a, matrix_b, m, n, k);
   }
   end = dclock();
@@ -94,7 +96,7 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
-  int M = 1024, K = 1024, N = 1024;  // 这个大小预取是有效果的
+  int M = 1024, K = 1024, N = 1024; // 这个大小预取是有效果的
 
   /**开始读取命令行参数**/
   stringstream ss(argv[1]);
