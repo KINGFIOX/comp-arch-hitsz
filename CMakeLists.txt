@@ -9,8 +9,8 @@ project(computer_architecture_labs
         VERSION 1.0.0)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
-include (utils)
-include(env_params)
+# include (utils)
+# include(env_params)
 
 
 IF (CMAKE_BUILD_TYPE MATCHES "Debug"

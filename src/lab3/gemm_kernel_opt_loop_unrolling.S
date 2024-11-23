@@ -81,7 +81,9 @@ DO_LOOP_N:
     fmul %st(1), %st(0)                 // 计算A[m][k] * B[k][n]  --> st(0)
 
     // TODO  练习1: 添加计算A[m][k] * B[k][n+1] --> st(0)的逻辑
-
+    add $1, mat_elem_idx                // 移动到B[k][n+1]的位置
+    flds (MAT_B, mat_elem_idx, 4)       // 加载 B[k][n+1]
+    fmul %st(2), %st(0)                 // 计算A[m][k] * B[k][n+1]  --> st(0)
 
     mov DIM_N, %rax
     mul loop_m
@@ -89,15 +91,21 @@ DO_LOOP_N:
     add loop_n, mat_elem_idx                    // 计算 m*N+n
 
     // TODO 练习1: 请添加加载C[m][n] --> st(1) 和 C[m][n+1] --> st(0)的逻辑
+    flds (MAT_C, mat_elem_idx, 4)      // 加载 C[m][n] --> st(1)
+    add $1, mat_elem_idx                // 移动到C[m][n+1]的位置
+    flds (MAT_C, mat_elem_idx, 4)      // 加载 C[m][n+1] --> st(0)
 
     // TODO 练习1: 请添加部分和累加逻辑: C[m][n+1] + A[m][k] * B[k][n+1] 和 C[m][n] + A[m][k] * B[k][n]
-
-    fstps (MAT_C, mat_elem_idx, 4)      // 保存C[m][n+1]
+    faddp %st(2), %st(0)                // st(0) = C[m][n+1] + A[m][k] * B[k][n+1]
+    faddp %st(2), %st(0)                // st(0) = C[m][n] + A[m][k] * B[k][n]
 
     // TODO 练习1: 请添加保存C[m][n]的逻辑
+    fstps (MAT_C, mat_elem_idx, 4)      // 保存C[m][n+1]
+    sub $1, mat_elem_idx               // 移动到C[m][n]的位置
+    fstps (MAT_C, mat_elem_idx, 4)      // 保存C[m][n]
 
-    // TODO 练习1: 请添加N维度的循环更新逻辑
-
+    // 更新N维度的循环控制变量
+    add $2, loop_n                      // 每次迭代增加2，因为同时处理了两个元素
     cmp DIM_N, loop_n
     jl DO_LOOP_N
 
@@ -117,6 +125,3 @@ gemm_kernel_opt_loop_unrolling:
     DO_GEMM
     POPD
     ret
-    
-
-

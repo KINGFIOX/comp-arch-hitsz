@@ -32,11 +32,8 @@ double dclock() {
 }
 
 void random_matrix(int m, int n, float *a) {
-  double drand48();
-  int i, j;
-
-  for (i = 0; i < m; i++)
-    for (j = 0; j < n; j++) a[i * n + j] = 2.0 * (float)drand48() - 1.0;
+  for (int i = 0; i < m; i++)
+    for (int j = 0; j < n; j++) a[i * n + j] = 2.0 * (float)drand48() - 1.0;
 }
 
 double perform_gemm_baseline(unsigned iteration_times, int m, int n, int k) {
