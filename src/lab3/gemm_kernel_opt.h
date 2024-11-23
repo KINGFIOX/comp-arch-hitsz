@@ -8,11 +8,11 @@
 #include <cstdint>
 
 extern "C" {
-    void gemm_kernel_baseline(float *C, float *A, float *B, uint64_t M, uint64_t N, uint64_t K);
+void gemm_kernel_baseline(float *C, float *A, float *B, uint64_t M, uint64_t N, uint64_t K);
 
-    void gemm_kernel_opt_loop_unrolling(float *C, float *A, float *B, uint64_t M, uint64_t N, uint64_t K);
+void gemm_kernel_opt_loop_unrolling(float *C, float *A, float *B, uint64_t M, uint64_t N, uint64_t K);
 
-    void gemm_kernel_opt_avx(float *C, float *A, float *B, uint64_t M, uint64_t N, uint64_t K);
+void gemm_kernel_opt_avx(float *C, float *A, float *B, uint64_t M, uint64_t N, uint64_t K);
 };
 
-#endif //COMPUTER_ARCHITECTURE_LABS_GEMM_KERNEL_OPT_H
+#endif  // COMPUTER_ARCHITECTURE_LABS_GEMM_KERNEL_OPT_H
