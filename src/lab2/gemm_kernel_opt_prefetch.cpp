@@ -8,7 +8,6 @@
 
 #include "gemm_kernel.h"
 
-
 using namespace std;
 
 static double gtod_ref_time_sec = 0.0;
